@@ -10,8 +10,9 @@ main() {
       var socket = await WebSocketTransformer.upgrade(req);
       socket.listen((msg){
         print('Message received: $msg');
-        sleep(Duration(seconds:5));
         socket.add(msg.toString().toUpperCase());
+        sleep(Duration(seconds:2));
+        socket.add((msg.toString()+"Again").toUpperCase());
       });
     }
   },
