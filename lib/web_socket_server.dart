@@ -8,6 +8,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 //this code receives message from client and sends it back instantly and aftr 2 seconds after converting to uppercase
 main() {
   List<WebSocket>connections=[];
+  List<String>uripathList=[];
   String message;
   runZoned(() async {
     var server = await HttpServer.bind('127.0.0.1', 8080);
@@ -16,12 +17,13 @@ main() {
       print('request for connection received');
       var socket = await WebSocketTransformer.upgrade(req);
       connections.add(socket);
-      print(connections.length);
+      uripathList.add((req.uri.path).toString());
+
       socket.listen((msg){
         message=msg;
         print('Message received: $msg');
         if(msg!=null)for(int i=0;i<connections.length;i++){
-          if(socket!=connections[i])//send to every other client
+          if(connections[i]!=socket && uripathList[i]==(req.uri.path).toString())
         connections[i].add(message.toUpperCase());
         }
         //Future.delayed(Duration(milliseconds: 2000),(){socket.add((msg.toString()+"Again").toUpperCase());});
