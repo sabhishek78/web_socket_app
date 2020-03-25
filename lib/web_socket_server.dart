@@ -20,15 +20,37 @@ main() {
       socket.listen((msg){
         message=msg;
         print('Message received: $msg');
-        if(msg!=null)for(int i=0;i<connections.length;i++){ //send to every client
+        if(msg!=null)for(int i=0;i<connections.length;i++){
+          if(socket!=connections[i])//send to every other client
         connections[i].add(message.toUpperCase());
         }
-        Future.delayed(Duration(milliseconds: 2000),(){socket.add((msg.toString()+"Again").toUpperCase());});
-
+        //Future.delayed(Duration(milliseconds: 2000),(){socket.add((msg.toString()+"Again").toUpperCase());});
       });
-
-
     }
     },
       onError: (e) => print("An error occurred."));
 }
+
+//main() {
+//  List<WebSocket>connections=[];
+//  String message;
+//  runZoned(() async {
+//    var server = await HttpServer.bind('127.0.0.1', 8080);
+//    print("Websocket started . Listening on port 8080");
+//    await for (var req in server) {
+//      print('request for connection received');
+//      var socket = await WebSocketTransformer.upgrade(req);
+//      connections.add(socket);
+//      print(connections.length);
+//      socket.listen((msg){
+//        message=msg;
+//        print('Message received: $msg');
+//        if(msg!=null)for(int i=0;i<connections.length;i++){ //send to every client
+//        connections[i].add(message.toUpperCase());
+//        }
+//        Future.delayed(Duration(milliseconds: 2000),(){socket.add((msg.toString()+"Again").toUpperCase());});
+//      });
+//    }
+//    },
+//      onError: (e) => print("An error occurred."));
+//}
